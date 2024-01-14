@@ -10,3 +10,6 @@ sysctl --system
 
 dnf install -y --disableexcludes=kubernetes kubelet kubeadm kubectl
 systemctl enable kubelet
+
+kubeadm completion bash > /etc/bash_completion.d/kubeadm
+kubectl completion bash > /etc/bash_completion.d/kubectl

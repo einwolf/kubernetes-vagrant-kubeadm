@@ -66,15 +66,15 @@ Vagrant.configure("2") do |config|
     dnf install -y nano bind-utils
   SHELL
 
-  config.vm.define :control1 do |control1|
-    config.vm.hostname = "kv1-control1"
+  config.vm.define :kv1control1 do |kv1control1|
+    config.vm.hostname = "kv1control1"
 
     # Set vagrant box
     # control1.vm.box = "almalinux/9"
     # control1.vm.box_version = "9.3.20231118"
 
     # Set cpu, memory, and other resources that are provider specific
-    config.vm.provider :libvirt do |domain|
+    kv1control1.vm.provider :libvirt do |domain|
       domain.memory = 2048
       domain.cpus = 2
       # domain.nested = true
@@ -82,11 +82,12 @@ Vagrant.configure("2") do |config|
     end
 
     # Shared directories
-    # control1.vm.synced_folder "./shared1", "/shared1", type: "sshfs"
+    # kv1control1.vm.synced_folder "./shared1", "/shared1", type: "sshfs"
 
     # Shell provisioning
-    control1.vm.provision "shell", inline: <<-SHELL
-      hostnamectl set-hostname "kv1-control11"
+    kv1control1.vm.provision "shell", inline: <<-SHELL
+      nmcli general hostname "kv1control11"
+      systemctl restart NetworkManager
       sudo /kubeshared/setup/install-crio.sh
       sudo /kubeshared/setup/install-kube.sh
       # sudo /kubeshared/setup/kubeadm-init.sh
@@ -94,15 +95,15 @@ Vagrant.configure("2") do |config|
 
   end
 
-  config.vm.define :worker1 do |worker1|
-    config.vm.hostname = "kv1-worker1"
+  config.vm.define :kv1worker1 do |kv1worker1|
+    config.vm.hostname = "kv1worker1"
 
     # Set vagrant box
     # worker1.vm.box = "almalinux/9"
     # worker1.vm.box_version = "9.3.20231118"
 
     # Set cpu, memory, and other resources that are provider specific
-    config.vm.provider :libvirt do |domain|
+    kv1worker1.vm.provider :libvirt do |domain|
       domain.memory = 2048
       domain.cpus = 2
       # domain.nested = true
@@ -110,11 +111,11 @@ Vagrant.configure("2") do |config|
     end
 
     # Shared directories
-    # worker1.vm.synced_folder "./shared1", "/shared1", type: "sshfs"
+    # kv1worker1.vm.synced_folder "./shared1", "/shared1", type: "sshfs"
 
     # Shell provisioning
-    worker1.vm.provision "shell", inline: <<-SHELL\
-      hostnamectl set-hostname "kv1-worker1"
+    kv1worker1.vm.provision "shell", inline: <<-SHELL\
+      hostnamectl set-hostname "kv1worker1"
       sudo /kubeshared/setup/install-crio.sh
       sudo /kubeshared/setup/install-kube.sh
       sudo /kubeshared/setup/kubeadm-init.sh
@@ -122,15 +123,15 @@ Vagrant.configure("2") do |config|
 
   end
 
-  config.vm.define :worker2 do |worker2|
-    config.vm.hostname = "kv1-worker2"
+  config.vm.define :kv1worker2 do |kv1worker2|
+    config.vm.hostname = "kv1worker2"
 
     # Set vagrant box
     # worker2.vm.box = "almalinux/9"
     # worker2.vm.box_version = "9.3.20231118"
 
     # Set cpu, memory, and other resources that are provider specific
-    config.vm.provider :libvirt do |domain|
+    kv1worker2.vm.provider :libvirt do |domain|
       domain.memory = 2048
       domain.cpus = 2
       # domain.nested = true
@@ -141,8 +142,8 @@ Vagrant.configure("2") do |config|
     # worker2.vm.synced_folder "./shared1", "/shared1", type: "sshfs"
 
     # Shell provisioning
-    worker2.vm.provision "shell", inline: <<-SHELL
-      hostnamectl set-hostname "kv1-worker2"
+    kv1worker2.vm.provision "shell", inline: <<-SHELL
+      hostnamectl set-hostname "kv1worker2"
       sudo /kubeshared/setup/install-crio.sh
       sudo /kubeshared/setup/install-kube.sh
     SHELL
