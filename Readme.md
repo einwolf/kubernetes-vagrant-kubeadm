@@ -6,6 +6,10 @@ Kubernetes cluster
 * Almalinux 9
 * kubeadm
 
+STATUS: paused
+
+DNS is not working between eth0 (vagrant nat) and eth1 (bridged br0).
+
 ## Vagrant defaults
 
 To set libvirt default storage pool add to `~/.vagrant.d/Vagrantfile`.

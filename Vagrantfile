@@ -38,11 +38,11 @@ Vagrant.configure("2") do |config|
   # This is how vagrant access vms.
   # vagrant creates/deletes private networks on up/destroy.
 
-  # config.vm.network "public_network", :adapter=>1 , type: "dhcp", :bridge => 'en4: Thunderbolt Ethernet'
+  # config.vm.network "public_network", :adapter=>1, type: "dhcp", :bridge => 'en4: Thunderbolt Ethernet'
   # config.vm.network :private_network, :type => "dhcp"
 
-  # eth0 is private nat to vagrant-libvirt
-  # eth1
+  # eth0 is private nat to vagrant-libvirt and uses dhcp
+  # eth1 is public bridged to br0 and uses dhcp
   config.vm.network :public_network, :dev => 'br0', :type => 'bridge'
 
   # Port forward host 8080 to guest 80
@@ -88,9 +88,10 @@ Vagrant.configure("2") do |config|
     kv1control1.vm.provision "shell", inline: <<-SHELL
       nmcli general hostname "kv1control11"
       systemctl restart NetworkManager
-      sudo /kubeshared/setup/install-crio.sh
+      sudo /kubeshared/setup/setup-vagrant.sh
       sudo /kubeshared/setup/install-kube.sh
-      # sudo /kubeshared/setup/kubeadm-init.sh
+      sudo /kubeshared/setup/install-crio.sh
+      # sudo /kubeshared/setup/kubeadm-init.sh | tee /kubeshared/setup/kubeadm-init-log.txt
     SHELL
 
   end
